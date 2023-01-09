@@ -1,0 +1,37 @@
+FROM nvidia/cuda:11.2.0-base-ubuntu18.04
+
+ENV PYTHON_VERSION=3.7
+
+RUN export DEBIAN_FRONTEND=noninteractive \
+    && apt-get -qq update -y \
+    && apt-get -qq install -y --no-install-recommends \
+    software-properties-common \
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get -qq install \
+    python${PYTHON_VERSION} \
+    python${PYTHON_VERSION}-venv \
+    python3-pip \
+    git \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN ln -s -f /usr/bin/python${PYTHON_VERSION} /usr/bin/python3 && \
+    ln -s -f /usr/bin/python${PYTHON_VERSION} /usr/bin/python && \
+    ln -s -f /usr/bin/pip3 /usr/bin/pip
+
+ENV VENV="paraformer"
+ENV PATH="${PATH}:${VENV}/bin"
+
+WORKDIR /app
+
+COPY . /app
+
+
+RUN python3 -m venv $VENV \
+    && $VENV/bin/pip install -U pip setuptools -i https://pypi.tuna.tsinghua.edu.cn/simple \
+    && $VENV/bin/pip install "modelscope[audio]" -f https://modelscope.oss-cn-beijing.aliyuncs.com/releases/repo.html \
+    && $VENV/bin/pip install -r /app/requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple \
+    && rm -rf ~/.cache/pip
+
+
+ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:9000", "--workers", "1", "--timeout", "0", "backend.app:app", "-k", "uvicorn.workers.UvicornWorker"]
