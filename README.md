@@ -65,7 +65,7 @@ docker run -d -p 9000:9000 paraformer-webserver-arm64
 ```
 
 ## Usage
-use 16hz, 16bit, mono format of wav file
+use 16000hz, 16bit, mono format of wav file
 ```bash
 curl --location --request POST --X POST 'http://localhost:9000/v1/api/speech/recognition' \
 --form 'audio=@/path/audio.wav'
