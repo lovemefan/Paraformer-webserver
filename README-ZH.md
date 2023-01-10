@@ -29,7 +29,7 @@ git clone https://github.com/lovemefan/Paraformer-webserver
 cd Paraformer-webserver
 pip install "modelscope[audio]" -f https://modelscope.oss-cn-beijing.aliyuncs.com/releases/repo.html -i https://mirrors.aliyun.com/pypi/simple 
 pip install -r requirement.txt -i https://mirrors.aliyun.com/pypi/simple
-gunicorn --bind 0.0.0.0:9000 --workers 1  app.webservice:app -k uvicorn.workers.UvicornWorker
+gunicorn --bind 0.0.0.0:9000 --workers 1  backend.app:app -k uvicorn.workers.UvicornWorker
 ```
 
 ## 构建镜像
