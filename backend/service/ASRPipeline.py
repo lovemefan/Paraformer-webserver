@@ -362,18 +362,31 @@ class AutomaticSpeechRecognitionPipeline(Pipeline):
 
         # 3. Build data-iterator
 
-        loader = ASRTask.build_streaming_iterator_modelscope(
-            data_path_and_name_and_type_new,
-            dtype=dtype,
-            batch_size=batch_size,
-            key_file=key_file,
-            num_workers=num_workers,
-            preprocess_fn=ASRTask.build_preprocess_fn(self.speech2text.asr_train_args, False),
-            collate_fn=ASRTask.build_collate_fn(self.speech2text.asr_train_args, False),
-            allow_variable_data_keys=allow_variable_data_keys,
-            inference=True,
-            sample_rate=fs
-        )
+        if flag_modelscope:
+            loader = ASRTask.build_streaming_iterator_modelscope(
+                data_path_and_name_and_type_new,
+                dtype=dtype,
+                batch_size=batch_size,
+                key_file=key_file,
+                num_workers=num_workers,
+                preprocess_fn=ASRTask.build_preprocess_fn(self.speech2text.asr_train_args, False),
+                collate_fn=ASRTask.build_collate_fn(self.speech2text.asr_train_args, False),
+                allow_variable_data_keys=allow_variable_data_keys,
+                inference=True,
+                sample_rate=fs
+            )
+        else:
+            loader = ASRTask.build_streaming_iterator(
+                data_path_and_name_and_type,
+                dtype=dtype,
+                batch_size=batch_size,
+                key_file=key_file,
+                num_workers=num_workers,
+                preprocess_fn=ASRTask.build_preprocess_fn(self.speech2text.asr_train_args, False),
+                collate_fn=ASRTask.build_collate_fn(self.speech2text.asr_train_args, False),
+                allow_variable_data_keys=allow_variable_data_keys,
+                inference=True,
+            )
 
         forward_time_total = 0.0
         length_total = 0.0

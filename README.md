@@ -17,7 +17,7 @@ Docker hub: https://hub.docker.com/r/lovemefan/paraformer-webserver
 
 ```bash
 # for gpu
-docker run -d --gpus all -p 9000:9000 lovemefan/paraformer-webserver:cuda-11.2.0
+docker run -d --gpus all -p 9000:9000 lovemefan/paraformer-webserver:cuda-11.2
 
 # for cpu
 
