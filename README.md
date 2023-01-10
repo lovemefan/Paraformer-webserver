@@ -2,7 +2,8 @@
 [中文版README](README-ZH.md)
 
 
-Paraformer is an efficient non-autoregressive end-to-end speech recognition framework proposed by the speech team of The Academy for Discovery, Adventure, Momentum and Outlook，Alibaba DAMO Academy, with SOTA results on multiple public datasets.
+Paraformer is an efficient non-autoregressive end-to-end speech recognition framework proposed by the speech team of The Academy for Discovery, Adventure, Momentum and Outlook，Alibaba DAMO Academy, with SOTA results on multiple public chinese datasets，
+unfortunately, the transcription without punctuation.
 The project is Paraformer Chinese universal speech recognition model, which uses industrial-grade tens of thousands of hours of labeled audio for model training to ensure the universal recognition effect of the model.
 The model can be applied to speech input method, voice navigation, intelligent meeting minutes and other scenarios.
 
