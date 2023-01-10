@@ -12,7 +12,8 @@ RUN export DEBIAN_FRONTEND=noninteractive &&\
     && apt-get  update -y \
     && apt-get  install -y --no-install-recommends \
     git \
-    gcc g++ \
+    gcc g++  \
+    libsndfile1\
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
@@ -24,7 +25,8 @@ COPY . /app
 
 RUN python3 -m venv $VENV \
     && $VENV/bin/pip install --upgrade pip -i https://pypi.tuna.tsinghua.edu.cn/simple \
-    && $VENV/bin/pip install -r /app/requirements.txt -f https://modelscope.oss-cn-beijing.aliyuncs.com/releases/repo.html -i https://pypi.tuna.tsinghua.edu.cn/simple \
+    && $VENV/bin/pip install "modelscope[audio]" -f https://modelscope.oss-cn-beijing.aliyuncs.com/releases/repo.html -f https://modelscope.oss-cn-beijing.aliyuncs.com/releases/repo.html -i https://pypi.tuna.tsinghua.edu.cn/simple \
+    && $VENV/bin/pip install -r /app/requirements.txt  -i https://pypi.tuna.tsinghua.edu.cn/simple \
     && rm -rf ~/.cache/pip
 
 

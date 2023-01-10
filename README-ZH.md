@@ -6,7 +6,9 @@ Paraformer是达摩院语音团队提出的一种高效的非自回归端到端�
 **现阶段modelscope[audio]只能在Linux-x86_64运行，不支持Mac和Windows。**
 
 
-本项目使用sanic为该语音识别框架搭建一个简单的http接口服务，并提供语音转写服务
+本项目使用sanic为该语音识别框架搭建一个简单的http接口服务，并提供语音转写服务。
+
+第一次调用接口时才会加载模型，所以第一次调用会比较慢，待改进。
 
 ## 快速使用
 Docker hub地址: https://hub.docker.com/r/lovemefan/paraformer-webserver
