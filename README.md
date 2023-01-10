@@ -6,6 +6,8 @@ Paraformer is an efficient non-autoregressive end-to-end speech recognition fram
 The project is Paraformer Chinese universal speech recognition model, which uses industrial-grade tens of thousands of hours of labeled audio for model training to ensure the universal recognition effect of the model.
 The model can be applied to speech input method, voice navigation, intelligent meeting minutes and other scenarios.
 
+**Modelscope only support on Linux-x86_64 for now，not available in Mac and Windows.**
+
 Paraformer webserver provides an HTTP interface build with sanic framework of python.
 * transcribe
 
@@ -20,10 +22,6 @@ docker run -d --gpus all -p 9000:9000 lovemefan/paraformer-webserver:cuda-11.2.0
 # for cpu
 
 docker run -d -p 9000:9000 lovemefan/paraformer-webserver:amd64
-
-# for mac apple chip
-
-docker run -d -p 9000:9000 lovemefan/paraformer-webserver:arm64
 ```
 
 ## RUN
@@ -55,14 +53,6 @@ docker run -d --gpus all -p 9000:9000 paraformer-webserver-gpu
 
 ```
 
-### FOR ARM (M1 chip Tested)
-```bash
-# Build Image
-docker build -f Dockerfile-arm -t paraformer-webserver-arm64 .
-
-# Run Container
-docker run -d -p 9000:9000 paraformer-webserver-arm64
-```
 
 ## Usage
 use 16000hz, 16bit, mono format of wav file
