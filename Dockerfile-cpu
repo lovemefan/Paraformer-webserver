@@ -22,9 +22,7 @@ WORKDIR /app
 COPY . /app
 
 RUN python3 -m venv $VENV \
-    && $VENV/bin/pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple \
-    && $VENV/bin/pip install -U pip setuptools -i https://mirrors.aliyun.com/pypi/simple \
-    && $VENV/bin/pip install "modelscope[audio]" -f https://modelscope.oss-cn-beijing.aliyuncs.com/releases/repo.html -i https://mirrors.aliyun.com/pypi/simple \
+    && $VENV/bin/pip install --upgrade pip  \
     && $VENV/bin/pip install -r /app/requirements.txt -i https://mirrors.aliyun.com/pypi/simple \
     && rm -rf ~/.cache/pip
 
