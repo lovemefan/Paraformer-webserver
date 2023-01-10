@@ -14,14 +14,13 @@ RUN export DEBIAN_FRONTEND=noninteractive &&\
     git \
     gcc g++  \
     libsndfile1\
+    python3.7-dev \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
 ENV VENV="paraformer"
 ENV PATH="${PATH}:${VENV}/bin"
-# solve the problem that fatal error: Python.h: No such file or directory
-ENV C_INCLUDE_PATH=/usr/include/${PYTHON_VERSION}:$C_INCLUDE_PATH
-ENV LUS_INCLUDE_PATH=/usr/include/${PYTHON_VERSION}:$CPLUS_INCLUDE_PATH
+
 
 WORKDIR /app
 COPY . /app
