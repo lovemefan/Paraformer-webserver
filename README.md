@@ -6,7 +6,7 @@ Paraformer is an efficient non-autoregressive end-to-end speech recognition fram
 The project is Paraformer Chinese universal speech recognition model, which uses industrial-grade tens of thousands of hours of labeled audio for model training to ensure the universal recognition effect of the model.
 The model can be applied to speech input method, voice navigation, intelligent meeting minutes and other scenarios.
 
-**Modelscope only support on Linux-x86_64 for now，not available in Mac and Windows.**
+**Modelscope[audio] only support on Linux-x86_64 for now，not available in Mac and Windows.**
 
 Paraformer webserver provides an HTTP interface build with sanic framework of python.
 * transcribe
