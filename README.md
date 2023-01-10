@@ -60,3 +60,14 @@ use 16000hz, 16bit, mono format of wav file
 curl --location --request POST --X POST 'http://localhost:9000/v1/api/speech/recognition' \
 --form 'audio=@/path/audio.wav'
 ```
+Response
+
+```json
+{
+	"message": "Success",
+	"code": 200,
+	"data": {
+		"text": "搜狐娱乐北京朝阳法院通告分别产出八十八万吨九十四万吨鹰眼打下的真"
+	}
+}
+```
