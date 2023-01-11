@@ -58,7 +58,7 @@ docker run -d --gpus all -p 9000:9000 paraformer-webserver-gpu
 ## Usage
 use 16000hz, 16bit, mono format of wav file
 ```bash
-curl --location --request POST --X POST 'http://localhost:9000/v1/api/speech/recognition' \
+curl --location --request POST -X POST 'http://localhost:9000/v1/api/speech/recognition' \
 --form 'audio=@/path/audio.wav'
 ```
 Response

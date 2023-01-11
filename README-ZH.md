@@ -56,7 +56,7 @@ docker run -d --gpus all -p 9000:9000 paraformer-webserver-gpu
 ## 接口使用
 当前接口仅支持 16000hz, 16比特, 单通道wav格式的音频
 ```bash
-curl --location --request POST --X POST 'http://localhost:9000/v1/api/speech/recognition' \
+curl --location --request POST -X POST 'http://localhost:9000/v1/api/speech/recognition' \
 --form 'audio=@/path/audio.wav'
 ```
 响应:
