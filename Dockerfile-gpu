@@ -34,6 +34,7 @@ COPY . /app
 
 RUN python3 -m venv $VENV \
     && $VENV/bin/pip install --upgrade pip -i http://mirrors.cloud.tencent.com/pypi/simple --trusted-host mirrors.cloud.tencent.com \
+    && $VENV/bin/pip install -U pip setuptools -i https://pypi.tuna.tsinghua.edu.cn/simple \
     && $VENV/bin/pip install -r /app/requirements.txt  -f https://modelscope.oss-cn-beijing.aliyuncs.com/releases/repo.html -i http://mirrors.cloud.tencent.com/pypi/simple --trusted-host mirrors.cloud.tencent.com \
     && rm -rf ~/.cache/pip
 
