@@ -6,7 +6,5 @@
 # @email     :lovemefan@outlook.com
 
 
-from .ASRPipeline import AutomaticSpeechRecognitionPipeline
-
 
 
