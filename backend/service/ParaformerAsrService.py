@@ -1,26 +1,75 @@
-#!/usr/bin/python3
 # -*- coding:utf-8 -*-
+# Modified from RapidParaformer(https://github.com/RapidAI/RapidASR/blob/main/rapid_paraformer/rapid_paraformer.py)
 # @FileName  :ParaformerAsrService.py
 # @Time      :2023/1/8 17:01
 # @Author    :lovemefan
 # @email     :lovemefan@outlook.com
 from typing import Union
-
+from typing import List
+from backend.service.utils import (CharTokenizer, Hypothesis, OrtInferSession,
+                                   TokenIDConverter, WavFrontend, read_yaml)
 from backend.decorator.singleton import singleton
-import os
-import torch
 from sanic.request import File
 import numpy as np
 from backend.utils.logger import logger
-from modelscope.pipelines import pipeline
+from backend.config.Config import Config
+from backend.utils.AudioHelper import AudioReader
 
 
 @singleton
 class ParaformerAsrService:
-    def __init__(self):
-        self.model = pipeline('asr-webservice',
-                              'damo/speech_paraformer-large_asr_nat-zh-cn-16k-common-vocab8404-pytorch')
 
-    def transcribe(self, audio: Union[np.ndarray, File]):
-        result = self.model(audio_in=audio.body)
-        return result
+    def __init__(self, config_path: str = None) -> None:
+        config_path = Config.get_instance().get('paraformer.config_path', None)
+        if config_path is None:
+            raise ValueError('please set path of config.yaml in backend/config/config.ini')
+
+        config = read_yaml(config_path)
+
+        self.converter = TokenIDConverter(**config['TokenIDConverter'])
+        self.tokenizer = CharTokenizer(**config['CharTokenizer'])
+        self.frontend_asr = WavFrontend(
+            cmvn_file=config['WavFrontend']['cmvn_file'],
+            **config['WavFrontend']['frontend_conf']
+        )
+        self.ort_infer = OrtInferSession(config['Model'])
+
+    def transcribe(self, audio: Union[File]):
+
+        waveform, _ = AudioReader.read_pcm16(audio.body)
+        waveform = waveform[None, ...]
+        speech, _ = self.frontend_asr.forward_fbank(waveform)
+        feats, feats_len = self.frontend_asr.forward_lfr_cmvn(speech)
+        am_scores = self.ort_infer(input_content=[feats, feats_len])
+
+        results = []
+        for am_score in am_scores:
+            pred_res = self.infer_one_feat(am_score)
+            results.append(pred_res)
+        return results
+
+    def infer_one_feat(self, am_score: np.ndarray) -> List[str]:
+        yseq = am_score.argmax(axis=-1)
+        score = am_score.max(axis=-1)
+        score = np.sum(score, axis=-1)
+
+        # pad with mask tokens to ensure compatibility with sos/eos tokens
+        # asr_model.sos:1  asr_model.eos:2
+        yseq = np.array([1] + yseq.tolist() + [2])
+        nbest_hyps = [Hypothesis(yseq=yseq, score=score)]
+
+        infer_res = []
+        for hyp in nbest_hyps:
+            # remove sos/eos and get results
+            last_pos = -1
+            token_int = hyp.yseq[1:last_pos].tolist()
+
+            # remove blank symbol id, which is assumed to be 0
+            token_int = list(filter(lambda x: x not in (0, 2), token_int))
+
+            # Change integer-ids to tokens
+            token = self.converter.ids2tokens(token_int)
+
+            text = self.tokenizer.tokens2text(token)
+            infer_res.append(text)
+        return infer_res
