@@ -12,8 +12,6 @@ from backend.exception.SpeechException import SpeechSampleRateException, MissPar
 from backend.model.ResponseBody import ResponseBody
 from backend.service.ParaformerAsrService import ParaformerAsrService
 
-from backend.utils.StatusCode import StatusCode
-
 recognition_route = Blueprint('speech', url_prefix='/api/speech', version=1)
 recongnitionService = ParaformerAsrService()
 
@@ -21,11 +19,11 @@ recongnitionService = ParaformerAsrService()
 
 @recognition_route.exception(SpeechSampleRateException)
 async def speech_sample_rate_exception(request, exception):
-    response = {
-        "reasons": [str(exception)],
-        "exception": StatusCode.SAMPLE_RATE_ERROR.name
-    }
-    return json(response, 408)
+    response = ResponseBody(
+        message=str(exception),
+        code=500
+    )
+    return json(response.__dict__, 408)
 
 
 @recognition_route.post('/recognition')
