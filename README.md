@@ -35,7 +35,8 @@ docker run -d -p 9000:9000 -v /path/logs:/app/backend/logs lovemefan/paraformer-
 ## 启动项目
 ```bash
 git clone https://github.com/lovemefan/Paraformer-webserver
-cd Paraformer-webserver 
+cd Paraformer-webserver
+wget https://github.com/lovemefan/Paraformer-webserver/releases/download/v2.0/paraformer.onnx -o backend/onnx/paraformer.onnx
 pip install -r requirement.txt -i https://mirrors.aliyun.com/pypi/simple
 gunicorn --bind 0.0.0.0:9000 --workers 1  backend.app:app -k uvicorn.workers.UvicornWorker
 ```
