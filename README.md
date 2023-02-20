@@ -47,7 +47,7 @@ docker run -d -p 9000:9000 lovemefan/paraformer-webserver:amd64
 docker run -d -p 9000:9000 -v /path/logs:/app/backend/logs lovemefan/paraformer-webserver:onnx-amd
 
 # for mac m1 with onnx
-docker run -d -p 9000:9000 -v /path/logs:/app/backend/logs lovemefan/paraformer-webserver:onnx-arrach64
+docker run -d -p 9000:9000 -v /path/logs:/app/backend/logs lovemefan/paraformer-webserver:onnx-aarch64
 
 ```
 
