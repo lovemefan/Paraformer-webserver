@@ -33,7 +33,7 @@ async def recognition(request):
     if not audio_file:
         raise MissParameters('audio is empty')
 
-    result = recongnitionService.transcribe(audio_file)
+    result = await recongnitionService.transcribe(audio_file)
     return json(
         ResponseBody(message=f'Success',
                      data=result).__dict__,

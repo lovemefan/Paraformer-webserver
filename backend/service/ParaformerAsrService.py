@@ -4,6 +4,7 @@
 # @Time      :2023/1/8 17:01
 # @Author    :lovemefan
 # @email     :lovemefan@outlook.com
+import asyncio
 from typing import Union
 from typing import List
 from backend.service.utils import (CharTokenizer, Hypothesis, OrtInferSession,
@@ -34,7 +35,7 @@ class ParaformerAsrService:
         )
         self.ort_infer = OrtInferSession(config['Model'])
 
-    def transcribe(self, audio: Union[File]):
+    async def transcribe(self, audio: Union[File]):
 
         waveform, _ = AudioReader.read_pcm16(audio.body)
         waveform = waveform[None, ...]
@@ -44,11 +45,11 @@ class ParaformerAsrService:
 
         results = []
         for am_score in am_scores:
-            pred_res = self.infer_one_feat(am_score)
+            pred_res = await self.infer_one_feat(am_score)
             results.append(pred_res)
         return results
 
-    def infer_one_feat(self, am_score: np.ndarray) -> List[str]:
+    async def infer_one_feat(self, am_score: np.ndarray) -> List[str]:
         yseq = am_score.argmax(axis=-1)
         score = am_score.max(axis=-1)
         score = np.sum(score, axis=-1)
@@ -56,10 +57,12 @@ class ParaformerAsrService:
         # pad with mask tokens to ensure compatibility with sos/eos tokens
         # asr_model.sos:1  asr_model.eos:2
         yseq = np.array([1] + yseq.tolist() + [2])
+        await asyncio.sleep(0)
         nbest_hyps = [Hypothesis(yseq=yseq, score=score)]
-
+        await asyncio.sleep(0)
         infer_res = []
         for hyp in nbest_hyps:
+            await asyncio.sleep(0)
             # remove sos/eos and get results
             last_pos = -1
             token_int = hyp.yseq[1:last_pos].tolist()
