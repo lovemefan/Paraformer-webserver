@@ -28,20 +28,25 @@ class AudioReader:
         return nframes
 
     @staticmethod
-    def read_pcm16(data: bytes):
+    def read_wav_bytes(data: bytes):
         """
         convert bytes into array of pcm_s16le data
         :param data: PCM format bytes
         :return:
         """
-        shortArray = array.array('h')  # int16
+
         # header of wav file
         info = data[:44]
         frames = data[44:]
         name, data_lengths, _, _, _, _, channels, sample_rate, bit_rate, block_length, sample_bit, _, pcm_length = struct.unpack_from(
             '<4sL4s4sLHHLLHH4sL', info)
         # shortArray each element is 16bit
-        shortArray.frombytes(frames)  # struct.unpack
-        data = np.array(shortArray)
-
+        data = AudioReader.read_pcm_byte(data)
         return data, sample_rate
+
+    @staticmethod
+    def read_pcm_byte(data: bytes):
+        short_array = array.array('h')
+        short_array.frombytes(data)
+        data = np.array(short_array)
+        return data
