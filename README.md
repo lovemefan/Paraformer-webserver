@@ -8,10 +8,21 @@ Paraformer是达摩院语音团队提出的一种高效的非自回归端到端�
 
 本项目使用sanic为该语音识别框架搭建一个简单的http接口服务，并提供语音转写服务。
 模型使用官方pytorch模型并导出为onnx模型
-目前支持：
-* pytorch GPU 只支持cuda,x86, linux
-* pytorch CPU 只支持x86, linux
-* ONNX CPU 目前只在linux和mac os上测试，支持x86cpu和aarch64的m1芯片
+
+## News
+* [2023年3月29日] v2.1
+  * [ ] vad模型onnx推理
+  * 离线识别模型（一句话识别）
+    * [x] http接口支持
+    * [x] grpc接口支持
+  * 流式模型，使用Paraformer流式模型用于屏幕滚动，使用Paraformer-large离线模型得到部分片段的最终结果。
+    * [ ] websocket 接口支持
+    * [ ] grpc接口支持
+  
+* [2023年3月6日] v2.0
+  * Pytorch GPU 只支持cuda,x86, linux
+  * Pytorch CPU 只支持x86, linux
+  * ONNX CPU 目前只在linux和mac os上测试，支持x86cpu和aarch64的m1芯片
 
 ## CER
 测试时间：2022.11 部分数据来源：https://github.com/SpeechColab/Leaderboard
