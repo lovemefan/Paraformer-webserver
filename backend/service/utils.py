@@ -75,7 +75,7 @@ class CharTokenizer():
         if value is None:
             return set()
 
-        if isinstance(value, Iterable[str]):
+        if isinstance(value, Iterable):
             return set(value)
 
         file_path = Path(value)

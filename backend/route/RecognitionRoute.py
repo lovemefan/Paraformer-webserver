@@ -10,11 +10,10 @@ from sanic.response import json
 
 from backend.exception.SpeechException import SpeechSampleRateException, MissParameters
 from backend.model.ResponseBody import ResponseBody
-from backend.service.ParaformerAsrService import ParaformerAsrService
+from backend.service.ParaformerAsrOfflineService import ParaformerAsrService
 
 recognition_route = Blueprint('speech', url_prefix='/api/speech', version=1)
 recongnitionService = ParaformerAsrService()
-
 
 
 @recognition_route.exception(SpeechSampleRateException)

@@ -4,17 +4,27 @@
 # @Time      :2023/1/7 17:02
 # @Author    :lovemefan
 # @email     :lovemefan@outlook.com
+import sys
+import os
+from concurrent import futures
+from multiprocessing import Process
 
+import grpc
+
+from backend.config.Config import Config
+from backend.runtime.grpc import offlineASR_pb2_grpc
+from backend.runtime.grpc.paraformerAsrGrpcService import ParaformerASRServicer
+from backend.utils.logger import logger
+
+sys.path.append(os.getcwd())
 from sanic import Sanic, Request
-from sanic.exceptions import RequestTimeout, NotFound
 from sanic.response import json, HTTPResponse
 import os
 from sanic_openapi import swagger_blueprint
-from backend.exception.SpeechException import MissParameters
-from backend.model.ResponseBody import ResponseBody
 from backend.route.RecognitionRoute import recognition_route
 
 app = Sanic("paraformer-webserver")
+
 
 @app.middleware("request")
 def cors_middle_req(request: Request):
@@ -43,11 +53,25 @@ def cors_middle_res(request: Request, response: HTTPResponse):
         }
     )
 
+
+def start_grpc_server(port):
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=5))
+    offlineASR_pb2_grpc.add_ASRServicer_to_server(ParaformerASRServicer(), server)
+    port = "[::]:" + str(port)
+    server.add_insecure_port(port)
+    server.start()
+    logger.info("grpc server started!")
+    server.wait_for_termination()
+
+
 app.blueprint(swagger_blueprint)
 app.blueprint(recognition_route)
 
 if __name__ == '__main__':
-    port = 8888
+    http_port = int(Config.get_instance().get("http.port"))
+    grpc_port = int(Config.get_instance().get("grpc.port"))
     # if env $port is none ,get the config port or default port
-    port = os.environ.get('PORT', port)
-    app.run(host="0.0.0.0", port=port)
+    http_port = os.environ.get('PORT', http_port)
+    grpc_server = Process(target=start_grpc_server, args=(grpc_port,))
+    grpc_server.start()
+    app.run(host="0.0.0.0", port=http_port)
