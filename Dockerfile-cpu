@@ -19,11 +19,10 @@ ENV PYTHONPATH=/app
 WORKDIR /app
 COPY . /app
 
-RUN python3 -m venv $VENV \
-    && $VENV/bin/pip install --upgrade pip -i http://mirrors.cloud.tencent.com/pypi/simple --trusted-host mirrors.cloud.tencent.com \
-    && $VENV/bin/pip install -r /app/requirements-cpu.txt -i http://mirrors.cloud.tencent.com/pypi/simple --trusted-host mirrors.cloud.tencent.com\
+RUN python3 -m pip install --upgrade pip -i https://mirrors.bfsu.edu.cn/pypi/web/simple --trusted-host mirrors.bfsu.edu.cn \
+    && python3 -m pip install -r /app/requirements-cpu.txt -i https://mirrors.bfsu.edu.cn/pypi/web/simple --trusted-host mirrors.bfsu.edu.cn \
     && rm -rf ~/.cache/pip
 
 
 
-ENTRYPOINT ["gunicorn", "--bind", "0.0.0.0:9000", "--workers", "1", "--timeout", "0", "backend.app:app", "-k", "uvicorn.workers.UvicornWorker"]
+ENTRYPOINT ["python3", "backend/app.py"]
