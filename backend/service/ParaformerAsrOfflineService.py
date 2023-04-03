@@ -17,6 +17,7 @@ from sanic.request import File
 import numpy as np
 from backend.config.Config import Config
 from backend.utils.AudioHelper import AudioReader
+from backend.utils.postprocess_text import sentence_postprocess
 
 
 @singleton
@@ -63,22 +64,18 @@ class ParaformerAsrService:
             # pad with mask tokens to ensure compatibility with sos/eos tokens
             # asr_model.sos:1  asr_model.eos:2
             yseq = np.array([1] + yseq.tolist() + [2])
-            nbest_hyps = [Hypothesis(yseq=yseq, score=score)]
-            infer_res = []
-            for hyp in nbest_hyps:
-                # remove sos/eos and get results
-                last_pos = -1
-                token_int = hyp.yseq[1:last_pos].tolist()
+            hyp = Hypothesis(yseq=yseq, score=score)
+            # remove sos/eos and get results
+            last_pos = -1
+            token_int = hyp.yseq[1:last_pos].tolist()
 
-                # remove blank symbol id, which is assumed to be 0
-                token_int = list(filter(lambda x: x not in (0, 2), token_int))
+            # remove blank symbol id, which is assumed to be 0
+            token_int = list(filter(lambda x: x not in (0, 2), token_int))
 
-                # Change integer-ids to tokens
-                token = self.converter.ids2tokens(token_int)
-
-                text = self.tokenizer.tokens2text(token)
-                infer_res.append(text)
-            return infer_res
+            # Change integer-ids to tokens
+            token = self.converter.ids2tokens(token_int)
+            text = sentence_postprocess(token)
+            return text[0]
 
         waveform = audio_data[None, ...]
         speech, _ = self.frontend_asr.forward_fbank(waveform)
@@ -100,21 +97,17 @@ class ParaformerAsrService:
         # asr_model.sos:1  asr_model.eos:2
         yseq = np.array([1] + yseq.tolist() + [2])
         await asyncio.sleep(0)
-        nbest_hyps = [Hypothesis(yseq=yseq, score=score)]
+        hyp = Hypothesis(yseq=yseq, score=score)
         await asyncio.sleep(0)
-        infer_res = []
-        for hyp in nbest_hyps:
-            await asyncio.sleep(0)
-            # remove sos/eos and get results
-            last_pos = -1
-            token_int = hyp.yseq[1:last_pos].tolist()
+        # remove sos/eos and get results
+        last_pos = -1
+        token_int = hyp.yseq[1:last_pos].tolist()
 
-            # remove blank symbol id, which is assumed to be 0
-            token_int = list(filter(lambda x: x not in (0, 2), token_int))
+        # remove blank symbol id, which is assumed to be 0
+        token_int = list(filter(lambda x: x not in (0, 2), token_int))
 
-            # Change integer-ids to tokens
-            token = self.converter.ids2tokens(token_int)
+        # Change integer-ids to tokens
+        token = self.converter.ids2tokens(token_int)
 
-            text = self.tokenizer.tokens2text(token)
-            infer_res.append(text)
-        return infer_res
+        text = sentence_postprocess(token)
+        return text[0]
