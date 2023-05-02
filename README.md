@@ -51,11 +51,12 @@ Docker hub地址: https://hub.docker.com/r/lovemefan/paraformer-webserver
 # for gpu with pytorch
 docker run -d --gpus all -p 9000:9000 lovemefan/paraformer-webserver:cuda-11.2.0
 
-# for cpu with pytorch
+# for cpu with pytorch (不推荐使用，不维护了)
 docker run -d -p 9000:9000 lovemefan/paraformer-webserver:amd64
 
-# for cpu with onnx
-docker run -d -p 9000:9000 -v /path/logs:/app/backend/logs lovemefan/paraformer-webserver:onnx-amd
+# for cpu with onnx （推荐使用）
+# 18888 for http, 18889 for gprc
+docker run -d -p 9999:18889 -p 9998:18888 -v /path/logs:/app/backend/logs lovemefan/paraformer-webserver:onnx-amd
 
 # for mac m1 with onnx
 docker run -d -p 9000:9000 -v /path/logs:/app/backend/logs lovemefan/paraformer-webserver:onnx-aarch64
