@@ -16,7 +16,12 @@ ENV PYTHONPATH=/app
 WORKDIR /app
 COPY . /app
 
-RUN pip install --upgrade pip  \
+
+
+RUN pip install --upgrade pip  && \
+    if [ "$TARGETPLATFORM" = "linux/arm64" ]; \
+        then pip install git+https://github.com/csukuangfj/kaldi-native-fbank \
+    fi \
     && pip install -r /app/requirements-cpu.txt -i https://pypi.org/simple \
     && rm -rf ~/.cache/pip
 
