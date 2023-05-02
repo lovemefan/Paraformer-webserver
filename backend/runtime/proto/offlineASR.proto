@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option java_package = "ex.grpc";
+option objc_class_prefix = "offlineASR";
+
+package offlineASR;
+
+service ASR {
+  rpc Recognize (Request) returns (Response) {}
+}
+
+message Request {
+  bytes audio_data = 1;
+  string user = 2;
+  string language = 3;
+}
+
+message Response {
+  string sentence = 1;
+  string user = 2;
+  string language = 3;
+}
