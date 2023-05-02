@@ -16,9 +16,9 @@ ENV PYTHONPATH=/app
 WORKDIR /app
 COPY . /app
 
-RUN python3 -m pip install --upgrade pip -i https://mirrors.bfsu.edu.cn/pypi/web/simple --trusted-host mirrors.bfsu.edu.cn \
-    && python3 -m pip install -r /app/requirements-cpu.txt -i https://mirrors.bfsu.edu.cn/pypi/web/simple --trusted-host mirrors.bfsu.edu.cn \
+RUN pip install --upgrade pip -i https://mirrors.bfsu.edu.cn/pypi/web/simple --trusted-host mirrors.bfsu.edu.cn \
+    && pip install -r /app/requirements-cpu.txt -i https://mirrors.bfsu.edu.cn/pypi/web/simple --trusted-host mirrors.bfsu.edu.cn \
     && rm -rf ~/.cache/pip
 
 
-ENTRYPOINT ["python3", "backend/app.py"]
+ENTRYPOINT ["python", "backend/app.py"]
