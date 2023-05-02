@@ -16,8 +16,8 @@ ENV PYTHONPATH=/app
 WORKDIR /app
 COPY . /app
 
-RUN pip install --upgrade pip -i https://mirrors.bfsu.edu.cn/pypi/web/simple --trusted-host mirrors.bfsu.edu.cn \
-    && pip install -r /app/requirements-cpu.txt -i https://mirrors.bfsu.edu.cn/pypi/web/simple --trusted-host mirrors.bfsu.edu.cn \
+RUN pip install --upgrade pip  \
+    && pip install -r /app/requirements-cpu.txt \
     && rm -rf ~/.cache/pip
 
 
