@@ -7,7 +7,7 @@ gunicorn==20.1.0
 h11==0.14.0
 httptools==0.5.0
 humanfriendly==10.0
-kaldi-native-fbank
+kaldi-native-fbank==1.15
 mpmath==1.2.1
 multidict==6.0.4
 numpy==1.24.2
