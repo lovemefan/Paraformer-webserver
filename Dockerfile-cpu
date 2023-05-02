@@ -11,10 +11,7 @@ RUN export DEBIAN_FRONTEND=noninteractive &&\
     echo "deb-src https://mirrors.tencent.com/debian/ bullseye-updates main non-free contrib" >>/etc/apt/sources.list \
     && rm -rf /var/lib/apt/lists/*
 
-ENV VENV="paraformer"
-ENV PATH="${PATH}:${VENV}/bin"
 ENV PYTHONPATH=/app
-
 
 WORKDIR /app
 COPY . /app
@@ -22,7 +19,6 @@ COPY . /app
 RUN python3 -m pip install --upgrade pip -i https://mirrors.bfsu.edu.cn/pypi/web/simple --trusted-host mirrors.bfsu.edu.cn \
     && python3 -m pip install -r /app/requirements-cpu.txt -i https://mirrors.bfsu.edu.cn/pypi/web/simple --trusted-host mirrors.bfsu.edu.cn \
     && rm -rf ~/.cache/pip
-
 
 
 ENTRYPOINT ["python3", "backend/app.py"]

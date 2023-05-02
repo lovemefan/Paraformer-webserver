@@ -157,7 +157,7 @@ class WavFrontend():
         for i in range(batch_size):
             waveform_length = input_lengths[i]
             waveform = input_content[i][:waveform_length]
-            waveform = waveform * (1 << 15)
+            # waveform = waveform * (1 << 15)
             mat = compute_fbank_feats(waveform,
                                       num_mel_bins=self.n_mels,
                                       frame_length=self.frame_length,

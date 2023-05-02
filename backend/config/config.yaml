@@ -1,5 +1,5 @@
 TokenIDConverter:
-  token_path: backend/onnx/token_list.pkl
+  token_path: /app/backend/runtime/onnx/token_list.pkl
   unk_symbol: <unk>
 
 CharTokenizer:
@@ -8,7 +8,7 @@ CharTokenizer:
   remove_non_linguistic_symbols: false
 
 WavFrontend:
-  cmvn_file: backend/onnx/am.mvn
+  cmvn_file: /app/backend/runtime/onnx/am.mvn
   frontend_conf:
     fs: 16000
     window: hamming
@@ -20,7 +20,7 @@ WavFrontend:
     filter_length_max: -.inf
 
 Model:
-  model_path: backend/onnx/paraformer.onnx
+  model_path: /app/backend/runtime/onnx/paraformer.onnx
   use_cuda: False
   CUDAExecutionProvider:
       device_id: 0

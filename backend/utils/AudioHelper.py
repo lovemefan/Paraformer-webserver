@@ -41,7 +41,7 @@ class AudioReader:
         name, data_lengths, _, _, _, _, channels, sample_rate, bit_rate, block_length, sample_bit, _, pcm_length = struct.unpack_from(
             '<4sL4s4sLHHLLHH4sL', info)
         # shortArray each element is 16bit
-        data = AudioReader.read_pcm_byte(data)
+        data = AudioReader.read_pcm_byte(frames)
         return data, sample_rate
 
     @staticmethod
