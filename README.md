@@ -46,7 +46,7 @@ Paraformer是达摩院语音团队提出的一种高效的非自回归端到端�
 | 单田芳 评书白眉大侠(1168, 2.5H)   | 江湖、武侠       | 5.2        | 4.79     | 14.19  | 3.16 | 15.42 | 9.77 | 5.86 | 5.71 | 5.45 |
 ## 快速使用
 Docker hub地址: https://hub.docker.com/r/lovemefan/paraformer-webserver
-
+github container地址: https://ghcr.io/lovemefan/paraformer-webserver
 ```bash
 # for gpu with pytorch
 docker run -d --gpus all -p 9000:9000 lovemefan/paraformer-webserver:cuda-11.2.0
@@ -56,7 +56,7 @@ docker run -d -p 9000:9000 lovemefan/paraformer-webserver:amd64
 
 # for cpu with onnx （推荐使用）
 # 18888 for http, 18889 for gprc
-docker run -d -p 9999:18889 -p 9998:18888 -v /path/logs:/app/backend/logs lovemefan/paraformer-webserver:onnx-amd
+docker run -d -p 9999:18889 -p 9998:18888 -v /path/logs:/app/backend/logs lovemefan/paraformer-webserver:latest
 
 # for mac m1 with onnx
 docker run -d -p 9000:9000 -v /path/logs:/app/backend/logs lovemefan/paraformer-webserver:onnx-aarch64
