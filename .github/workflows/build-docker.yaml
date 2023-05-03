@@ -68,7 +68,6 @@ jobs:
 
       - name: Download onnx file
         run: |
-          sudo apt install git
           wget https://github.com/lovemefan/Paraformer-webserver/releases/download/v2.0.1/paraformer.onnx -O backend/runtime/onnx/paraformer.onnx
 
       # 构建并上传
