@@ -54,8 +54,8 @@ docker run -d --gpus all -p 9000:9000 lovemefan/paraformer-webserver:cuda-11.2.0
 
 # for cpu with onnx 
 # 18888 for http, 18889 for gprc
-docker run -d -p 9999:18889 -p 9998:18888 -v /path/logs:/app/backend/logs lovemefan/paraformer-webserver:latest
-docker run -d -p 9999:18889 -p 9998:18888 -v /path/logs:/app/backend/logs ghcr.io/lovemefan/paraformer-webserver:latest
+docker run -d -p 9999:18889 -p 9998:18888 -v /path/logs:/app/backend/logs lovemefan/paraformer-webserver:main
+docker run -d -p 9999:18889 -p 9998:18888 -v /path/logs:/app/backend/logs ghcr.io/lovemefan/paraformer-webserver:main
 # for mac m1 with onnx
 docker run -d -p 9000:9000 -v /path/logs:/app/backend/logs lovemefan/paraformer-webserver:onnx-aarch64
 
