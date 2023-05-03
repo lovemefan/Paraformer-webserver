@@ -1,0 +1,22 @@
+FROM python:3.8-slim-bullseye
+
+ENV PYTHONPATH=/app
+
+WORKDIR /app
+COPY . /app
+
+
+
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; \
+    then \
+      pip install --upgrade pip; \
+    else \
+      apt update -y && apt install cmake gcc && \
+      pip install --upgrade pip  \
+      && cd kaldi-native-fbank && pip install . ; \
+    fi \
+    && pip install -r /app/requirements-cpu.txt -i https://pypi.org/simple \
+    && rm -rf ~/.cache/pip \
+
+
+ENTRYPOINT ["python", "backend/app.py"]
