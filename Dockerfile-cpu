@@ -18,11 +18,11 @@ COPY . /app
 
 
 
-RUN if [ "$TARGETPLATFORM" = "linux/arm64" ]; \
+RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; \
     then \
-      pip install --upgrade pip && pip install git+https://github.com/csukuangfj/kaldi-native-fbank; \
-    else \
       pip install --upgrade pip; \
+    else \
+      pip install --upgrade pip && pip install git+https://github.com/csukuangfj/kaldi-native-fbank; \
     fi \
     && pip install -r /app/requirements-cpu.txt -i https://pypi.org/simple \
     && rm -rf ~/.cache/pip
