@@ -22,6 +22,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; \
     then \
       pip install --upgrade pip; \
     else \
+      apt install cmake gcc && \
       pip install --upgrade pip  \
       && cd kaldi-native-fbank && pip install . ; \
     fi \
