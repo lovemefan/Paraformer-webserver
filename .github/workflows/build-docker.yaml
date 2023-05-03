@@ -51,7 +51,7 @@ jobs:
           echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
 
       # 登录到 docker hub 容器仓库
-      - name: Docker login
+      - name: Dockerhub login
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -71,7 +71,9 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE }}
+          images: |
+            lovemefan/paraformer-webserver
+            ${{ env.REGISTRY }}/${{ env.IMAGE }}
 
       - name: Download onnx file
         run: |
@@ -87,7 +89,7 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: latest
+          tags: ${{ steps.prepare.outputs.docker_image }}:${{ steps.get_version.outputs.prefix }}-${{ steps.prepare.outputs.minor_version }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
