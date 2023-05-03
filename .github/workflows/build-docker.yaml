@@ -73,7 +73,7 @@ jobs:
         with:
           images: |
             lovemefan/paraformer-webserver
-            ${{ env.REGISTRY }}/${{ env.IMAGE }}
+            ${{ env.REGISTRY }}/lovemefan/paraformer-webserver
 
       - name: Download onnx file
         run: |
