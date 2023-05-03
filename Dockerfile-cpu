@@ -22,11 +22,12 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; \
     then \
       pip install --upgrade pip; \
     else \
-      pip install --upgrade pip && pip install git \
-      && pip install git+https://github.com/csukuangfj/kaldi-native-fbank; \
+      pip install --upgrade pip  \
+      &&  git clone https://github.com/csukuangfj/kaldi-native-fbank.git\
+      && cd kaldi-native-fbank && pip install . ; \
     fi \
     && pip install -r /app/requirements-cpu.txt -i https://pypi.org/simple \
-    && rm -rf ~/.cache/pip
+    && rm -rf ~/.cache/pip \
 
 
 ENTRYPOINT ["python", "backend/app.py"]
