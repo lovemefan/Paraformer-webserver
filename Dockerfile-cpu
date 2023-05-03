@@ -22,9 +22,7 @@ RUN if [ "$TARGETPLATFORM" = "linux/amd64" ]; \
     then \
       pip install --upgrade pip; \
     else \
-      apt-get update && apt-get install -y  cmake gcc && \
-      pip install --upgrade pip  \
-      && cd kaldi-native-fbank && pip install . ; \
+      pip install kaldi_native_fbank-1.15-cp38-cp38-arm64.whl; \
     fi \
     && pip install -r /app/requirements-cpu.txt -i https://pypi.org/simple \
     && rm -rf ~/.cache/pip \
